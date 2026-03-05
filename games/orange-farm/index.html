@@ -3,59 +3,729 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>助农电商模拟器</title>
-    <link rel="stylesheet" href="style.css">
+    <title>🍊 橘子农场主 - 助农电商模拟器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #98FB98 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .cloud {
+            position: fixed;
+            font-size: 4em;
+            opacity: 0.8;
+            animation: float 20s infinite linear;
+            z-index: 0;
+        }
+        
+        .cloud:nth-child(1) { top: 10%; left: -20%; animation-duration: 25s; }
+        .cloud:nth-child(2) { top: 20%; left: -30%; animation-duration: 30s; animation-delay: 5s; }
+        .cloud:nth-child(3) { top: 5%; left: -40%; animation-duration: 35s; animation-delay: 10s; }
+        
+        @keyframes float {
+            0% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(100vw) translateY(-20px); }
+            100% { transform: translateX(200vw) translateY(0); }
+        }
+        
+        .game-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: bounceIn 1s;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .game-title {
+            font-size: 3.5em;
+            color: #FF8C00;
+            text-shadow: 4px 4px 0 #FFD700, 8px 8px 0 rgba(0,0,0,0.2);
+            letter-spacing: 3px;
+            animation: pulse 2s infinite;
+            font-weight: bold;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .game-subtitle {
+            font-size: 1.3em;
+            color: #FF6B35;
+            background: rgba(255,255,255,0.9);
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 20px;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .rank-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B6B, #C44569);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            margin-left: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        .mascot {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 5em;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            animation: wave 3s infinite;
+        }
+        
+        .mascot:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+        
+        .mascot-bubble {
+            position: fixed;
+            bottom: 140px;
+            right: 80px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 20px;
+            border: 3px solid #FF8C00;
+            font-size: 1em;
+            max-width: 250px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 99;
+            display: none;
+            animation: popIn 0.3s;
+        }
+        
+        .mascot-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 30px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #FF8C00 transparent;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .resource-bar {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 20px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 8px 25px rgba(255,140,0,0.4);
+            border: 4px solid #FFF;
+            animation: slideDown 0.5s;
+        }
+        
+        @keyframes slideDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .resource-item {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 10px 20px;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .resource-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.3) 10px,
+                rgba(255,255,255,0.3) 20px
+            );
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .resource-item:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+        
+        .resource-value {
+            font-size: 2em;
+            color: #FF6B35;
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+        }
+        
+        .resource-label {
+            color: #666;
+            font-weight: 600;
+            font-size: 0.9em;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .prosperity-bar-container {
+            min-width: 200px;
+        }
+        
+        .prosperity-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .prosperity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B6B, #FFD93D);
+            transition: width 0.5s;
+            border-radius: 10px;
+        }
+        
+        .main-game {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 1100px) {
+            .main-game {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .farm-section {
+            background: linear-gradient(135deg, #DEB887 0%, #D2691E 100%);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 5px solid #8B4513;
+            position: relative;
+        }
+        
+        .farm-section::before {
+            content: '🌾 果园';
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: #8B4513;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .tree-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .tree {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #8B7355 0%, #654321 100%);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 4px solid #5D4E37;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tree:hover {
+            transform: scale(1.05) rotate(2deg);
+            border-color: #FFD700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.6);
+        }
+        
+        .tree.ready {
+            animation: readyPulse 1s infinite;
+        }
+        
+        @keyframes readyPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(255,215,0,0.4); }
+            50% { box-shadow: 0 0 30px rgba(255,215,0,0.8); }
+        }
+        
+        .tree-icon {
+            font-size: 3em;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .tree-status {
+            color: white;
+            font-size: 0.8em;
+            margin-top: 5px;
+            position: relative;
+            z-index: 1;
+            background: rgba(0,0,0,0.5);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn.primary {
+            background: linear-gradient(135deg, #FF6B35, #FF8C00);
+            color: white;
+        }
+        
+        .btn.secondary {
+            background: linear-gradient(135deg, #4ECDC4, #44A08D);
+            color: white;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .panel {
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border: 3px solid #FFF;
+        }
+        
+        .panel h2 {
+            color: #FF6B35;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 3px solid #FFD700;
+            padding-bottom: 10px;
+        }
+        
+        .livestream-panel {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .livestream-panel h2 {
+            color: white;
+            border-bottom-color: rgba(255,255,255,0.3);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.9);
+            font-size: 0.9em;
+        }
+        
+        .village-panel {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .building-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #E0E0E0;
+            transition: all 0.3s;
+        }
+        
+        .building-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .building-card.built {
+            background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%);
+            border-color: #4ECDC4;
+        }
+        
+        .building-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .building-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .building-icon {
+            font-size: 1.5em;
+        }
+        
+        .building-desc {
+            color: #666;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+        
+        .building-effect {
+            color: #4ECDC4;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .building-cost {
+            color: #FF6B35;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .building-btn {
+            width: 100%;
+            padding: 8px;
+            font-size: 0.9em;
+        }
+        
+        .info-bar {
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 15px 25px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .info-item {
+            text-align: center;
+        }
+        
+        .info-label {
+            color: #666;
+            font-size: 0.85em;
+        }
+        
+        .info-value {
+            color: #FF6B35;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .event-log {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 15px 25px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .event-log p {
+            margin-bottom: 8px;
+            font-size: 0.9em;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .event-log p:last-child {
+            border-bottom: none;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        .modal.hidden {
+            display: none;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s;
+        }
+        
+        @keyframes slideUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        .modal-content h2 {
+            color: #FF6B35;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .modal-content p {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        #stream-overlay {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        #stream-animation {
+            text-align: center;
+            color: white;
+            padding: 40px;
+        }
+        
+        .streamer-avatar {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .stream-title {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .stream-viewers, .stream-orders {
+            font-size: 1.3em;
+            margin: 10px 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        #stream-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            transition: width 0.1s;
+            border-radius: 15px;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 100px;
+            right: 50%;
+            transform: translateX(50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            z-index: 2000;
+            animation: toastIn 0.3s;
+        }
+        
+        @keyframes toastIn {
+            0% { transform: translateX(50%) translateY(-50px); opacity: 0; }
+            100% { transform: translateX(50%) translateY(0); opacity: 1; }
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
-    <div id="game-container">
-        <!-- 顶部状态栏 -->
-        <header id="status-bar">
-            <div class="status-item">
-                <span class="label">💰 现金</span>
-                <span id="money" class="value">1000</span>
-            </div>
-            <div class="status-item">
-                <span class="label">🍊 耙耙柑</span>
-                <span id="oranges" class="value">0</span>
-            </div>
-            <div class="status-item">
-                <span class="label">📈 繁荣度</span>
-                <div id="prosperity-bar">
-                    <div id="prosperity-fill"></div>
-                </div>
-                <span id="prosperity" class="value">0</span>
-            </div>
-            <div class="status-item">
-                <span class="label">📅 第</span>
-                <span id="day" class="value">1</span>
-                <span class="label">天</span>
+    <!-- 云朵背景 -->
+    <div class="cloud">☁️</div>
+    <div class="cloud">☁️</div>
+    <div class="cloud">☁️</div>
+
+    <div class="game-container">
+        <!-- 标题 -->
+        <header class="game-header">
+            <h1 class="game-title">🍊 橘子农场主</h1>
+            <div class="game-subtitle">
+                助农电商模拟器
+                <span class="rank-badge" id="rank-display">🎖️ 村官</span>
             </div>
         </header>
 
-        <!-- 主游戏区域 -->
-        <main id="game-main">
+        <!-- 资源栏 -->
+        <div class="resource-bar">
+            <div class="resource-item">
+                <div class="resource-value" id="money">1000</div>
+                <div class="resource-label">💰 现金</div>
+            </div>
+            <div class="resource-item">
+                <div class="resource-value" id="oranges">0</div>
+                <div class="resource-label">🍊 耙耙柑</div>
+            </div>
+            <div class="resource-item prosperity-bar-container">
+                <div class="resource-value" id="prosperity">0</div>
+                <div class="resource-label">📈 繁荣度</div>
+                <div class="prosperity-bar">
+                    <div class="prosperity-fill" id="prosperity-fill"></div>
+                </div>
+            </div>
+            <div class="resource-item">
+                <div class="resource-value" id="day">1</div>
+                <div class="resource-label">📅 天数</div>
+            </div>
+        </div>
+
+        <!-- 主游戏区 -->
+        <main class="main-game">
             <!-- 左侧：果园 -->
-            <section id="orchard-panel" class="panel">
-                <h2>🍊 果园</h2>
-                <div id="orchard-area">
-                    <div id="tree-grid">
-                        <!-- 动态生成果树 -->
-                    </div>
+            <section class="farm-section">
+                <h2 style="color: #8B4513; margin-bottom: 15px;">🌳 果园</h2>
+                <div class="tree-grid" id="tree-grid">
+                    <!-- 动态生成果树 -->
                 </div>
                 <div class="action-bar">
-                    <button id="btn-harvest" class="btn primary">采摘耙耙柑</button>
-                    <button id="btn-plant" class="btn secondary">种植新树 (💰500)</button>
+                    <button class="btn primary" id="btn-harvest">🍊 采摘耙耙柑</button>
+                    <button class="btn secondary" id="btn-plant">🌱 种植新树 (💰500)</button>
                 </div>
                 <div class="info-bar">
-                    <span>果树数量: <span id="tree-count">1</span></span>
-                    <span>库存容量: <span id="storage-cap">100</span></span>
+                    <div class="info-item">
+                        <div class="info-label">果树数量</div>
+                        <div class="info-value" id="tree-count">1</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">库存容量</div>
+                        <div class="info-value" id="storage-cap">100</div>
+                    </div>
                 </div>
             </section>
 
-            <!-- 中间：直播 -->
-            <section id="livestream-panel" class="panel">
-                <h2>📺 直播带货</h2>
-                <div id="livestream-setup">
+            <!-- 右侧面板 -->
+            <div class="side-panel">
+                <!-- 直播带货 -->
+                <section class="panel livestream-panel">
+                    <h2>📺 直播带货</h2>
                     <div class="form-group">
                         <label>选择商品:</label>
                         <select id="product-select">
@@ -67,9 +737,9 @@
                     <div class="form-group">
                         <label>定价策略:</label>
                         <select id="price-strategy">
-                            <option value="low">低价走量 (+50%销量, -20%价格)</option>
+                            <option value="low">低价走量 (+50%销量，-20%价格)</option>
                             <option value="normal" selected>正常定价</option>
-                            <option value="high">高端路线 (-30%销量, +50%价格)</option>
+                            <option value="high">高端路线 (-30%销量，+50%价格)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -81,61 +751,641 @@
                             <option value="1000">大量投放 (💰1000)</option>
                         </select>
                     </div>
-                </div>
-                <button id="btn-stream" class="btn primary large">🎬 开始直播</button>
-                <div id="stream-result" class="hidden">
-                    <!-- 直播结果显示 -->
-                </div>
-            </section>
+                    <button class="btn primary" id="btn-stream" style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🎬 开始直播</button>
+                </section>
 
-            <!-- 右侧：村庄建设 -->
-            <section id="village-panel" class="panel">
-                <h2>🏘️ 村庄建设</h2>
-                <div id="buildings-list">
-                    <!-- 动态生成建筑列表 -->
-                </div>
-            </section>
+                <!-- 村庄建设 -->
+                <section class="panel village-panel">
+                    <h2>🏘️ 村庄建设</h2>
+                    <div id="buildings-list">
+                        <!-- 动态生成建筑列表 -->
+                    </div>
+                </section>
+            </div>
         </main>
 
-        <!-- 底部信息栏 -->
-        <footer id="info-bar">
-            <div id="event-log">
-                <p>欢迎来到 <strong>阳光村</strong>！你是新来的大学生村官，带领村民致富吧！</p>
-            </div>
+        <!-- 事件日志 -->
+        <footer class="event-log" id="event-log">
+            <p>欢迎来到 <strong>阳光村</strong>！你是新来的大学生村官，带领村民致富吧！</p>
         </footer>
+    </div>
 
-        <!-- 直播动画遮罩 -->
-        <div id="stream-overlay" class="hidden">
-            <div id="stream-animation">
-                <div class="streamer-avatar">👩‍💼</div>
-                <div class="stream-title">直播中...</div>
-                <div class="stream-viewers">👁️ <span id="viewer-count">0</span> 观众</div>
-                <div class="stream-orders">📦 <span id="order-count">0</span> 订单</div>
-                <div class="progress-bar">
-                    <div id="stream-progress"></div>
-                </div>
-            </div>
-        </div>
+    <!-- 吉祥物 -->
+    <div class="mascot" id="mascot">🐮</div>
+    <div class="mascot-bubble" id="mascot-bubble">点击果树采摘耙耙柑，然后直播带货赚钱哦！</div>
 
-        <!-- 升官弹窗 -->
-        <div id="promotion-modal" class="modal hidden">
-            <div class="modal-content">
-                <h2>🎉 恭喜升官！</h2>
-                <p id="promotion-text"></p>
-                <button id="btn-close-promotion" class="btn primary">继续奋斗</button>
-            </div>
-        </div>
-
-        <!-- 事件弹窗 -->
-        <div id="event-modal" class="modal hidden">
-            <div class="modal-content">
-                <h2 id="event-title"></h2>
-                <p id="event-text"></p>
-                <div id="event-choices"></div>
+    <!-- 直播动画遮罩 -->
+    <div id="stream-overlay" class="modal hidden">
+        <div id="stream-animation">
+            <div class="streamer-avatar">👩‍💼</div>
+            <div class="stream-title">直播中...</div>
+            <div class="stream-viewers">👁️ <span id="viewer-count">0</span> 观众</div>
+            <div class="stream-orders">📦 <span id="order-count">0</span> 订单</div>
+            <div class="progress-bar">
+                <div id="stream-progress"></div>
             </div>
         </div>
     </div>
 
-    <script src="game.js"></script>
+    <!-- 升官弹窗 -->
+    <div id="promotion-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>🎉 恭喜升官！</h2>
+            <p id="promotion-text"></p>
+            <button class="btn primary" id="btn-close-promotion">继续奋斗</button>
+        </div>
+    </div>
+
+    <!-- 事件弹窗 -->
+    <div id="event-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2 id="event-title"></h2>
+            <p id="event-text"></p>
+            <div id="event-choices"></div>
+        </div>
+    </div>
+
+    <script>
+// ==================== 游戏状态 ====================
+const GameState = {
+    money: 1000,
+    oranges: 0,
+    orangeQuality: 1.0,
+    prosperity: 0,
+    day: 1,
+    trees: [{ id: 1, mature: true, harvestable: true }],
+    nextTreeId: 2,
+    storageCap: 100,
+    builtFacilities: [],
+    rank: '村官',
+    rankIndex: 0,
+    unlocks: {
+        juice: false,
+        dried: false,
+        livestreamBoost: false,
+        advancedPricing: false
+    },
+    effects: {
+        harvestBonus: 0,
+        priceBonus: 0,
+        storageBonus: 0,
+        prosperityBonus: 0
+    }
+};
+
+// ==================== 建筑配置 ====================
+const Buildings = [
+    {
+        id: 'road',
+        name: '水泥路',
+        icon: '🛤️',
+        desc: '修路通向外面的世界',
+        effect: '采摘效率 +20%',
+        cost: 500,
+        effectValue: { harvestBonus: 0.2 },
+        prosperityAdd: 10
+    },
+    {
+        id: 'warehouse',
+        name: '仓库',
+        icon: '🏠',
+        desc: '扩大存储容量',
+        effect: '库存容量 +50',
+        cost: 800,
+        effectValue: { storageBonus: 50 },
+        prosperityAdd: 15
+    },
+    {
+        id: 'network',
+        name: '网络基站',
+        icon: '📡',
+        desc: '让直播更顺畅',
+        effect: '直播收入 +15%',
+        cost: 1500,
+        effectValue: { priceBonus: 0.15 },
+        prosperityAdd: 20
+    },
+    {
+        id: 'juice_factory',
+        name: '果汁加工厂',
+        icon: '🏭',
+        desc: '解锁果汁产品',
+        effect: '可卖果汁 (💰25/瓶)',
+        cost: 3000,
+        effectValue: { unlock: 'juice' },
+        prosperityAdd: 30
+    },
+    {
+        id: 'dried_factory',
+        name: '果干加工厂',
+        icon: '🏗️',
+        desc: '解锁果干产品',
+        effect: '可卖果干 (💰30/包)',
+        cost: 5000,
+        effectValue: { unlock: 'dried' },
+        prosperityAdd: 40
+    },
+    {
+        id: 'pack_center',
+        name: '包装中心',
+        icon: '📦',
+        desc: '提升产品形象',
+        effect: '所有产品价格 +10%',
+        cost: 4000,
+        effectValue: { priceBonus: 0.1 },
+        prosperityAdd: 25
+    }
+];
+
+// ==================== 官阶配置 ====================
+const Ranks = [
+    { name: '村官', prosperity: 0 },
+    { name: '村支书', prosperity: 100 },
+    { name: '副镇长', prosperity: 300 },
+    { name: '镇长', prosperity: 600 },
+    { name: '副县长', prosperity: 1000 },
+    { name: '县长', prosperity: 2000 },
+    { name: '副市长', prosperity: 4000 },
+    { name: '市长', prosperity: 8000 }
+];
+
+// ==================== 随机事件配置 ====================
+const RandomEvents = [
+    {
+        title: '🌧️ 连续阴雨',
+        text: '最近雨水太多，耙耙柑甜度下降了。采摘量减少 20%。',
+        effect: () => { GameState.effects.harvestBonus -= 0.2; },
+        negative: true
+    },
+    {
+        title: '☀️ 阳光充足',
+        text: '最近天气很好，耙耙柑格外甜！采摘量增加 30%。',
+        effect: () => { GameState.effects.harvestBonus += 0.3; },
+        negative: false
+    },
+    {
+        title: '📺 媒体报道',
+        text: '县电视台来采访你的助农事迹，知名度提升！直播观众 +50%。',
+        effect: () => { GameState.effects.priceBonus += 0.5; },
+        negative: false
+    },
+    {
+        title: '🐛 病虫害',
+        text: '果园发现害虫，需要花钱治理。',
+        effect: () => { 
+            const cost = Math.min(GameState.money, 200);
+            GameState.money -= cost;
+            showToast(`花费 💰${cost} 治理害虫`);
+        },
+        negative: true
+    },
+    {
+        title: '🌟 网红带货',
+        text: '有网红主动来帮忙带货，这次直播收入翻倍！',
+        effect: () => { GameState.effects.priceBonus += 1.0; },
+        negative: false
+    },
+    {
+        title: '📉 市场波动',
+        text: '市场上耙耙柑供应过剩，价格下跌 15%。',
+        effect: () => { GameState.orangeQuality *= 0.85; },
+        negative: true
+    },
+    {
+        title: '💰 政府补贴',
+        text: '政府发放助农补贴！',
+        effect: () => { 
+            const bonus = 500 + Math.floor(GameState.prosperity * 0.5);
+            GameState.money += bonus;
+            showToast(`获得补贴 💰${bonus}`);
+        },
+        negative: false
+    },
+    {
+        title: '🏆 获奖喜讯',
+        text: '你的耙耙柑获得省级优质农产品奖！所有产品价格 +20%。',
+        effect: () => { GameState.orangeQuality *= 1.2; },
+        negative: false
+    }
+];
+
+// ==================== UI 元素 ====================
+const UI = {
+    money: document.getElementById('money'),
+    oranges: document.getElementById('oranges'),
+    prosperity: document.getElementById('prosperity'),
+    prosperityFill: document.getElementById('prosperity-fill'),
+    day: document.getElementById('day'),
+    treeCount: document.getElementById('tree-count'),
+    storageCap: document.getElementById('storage-cap'),
+    treeGrid: document.getElementById('tree-grid'),
+    buildingsList: document.getElementById('buildings-list'),
+    eventLog: document.getElementById('event-log'),
+    streamOverlay: document.getElementById('stream-overlay'),
+    streamProgress: document.getElementById('stream-progress'),
+    viewerCount: document.getElementById('viewer-count'),
+    orderCount: document.getElementById('order-count'),
+    promotionModal: document.getElementById('promotion-modal'),
+    promotionText: document.getElementById('promotion-text'),
+    eventModal: document.getElementById('event-modal'),
+    eventTitle: document.getElementById('event-title'),
+    eventText: document.getElementById('event-text'),
+    eventChoices: document.getElementById('event-choices'),
+    productSelect: document.getElementById('product-select'),
+    priceStrategy: document.getElementById('price-strategy'),
+    trafficBuy: document.getElementById('traffic-buy'),
+    rankDisplay: document.getElementById('rank-display'),
+    mascot: document.getElementById('mascot'),
+    mascotBubble: document.getElementById('mascot-bubble')
+};
+
+// ==================== 核心功能 ====================
+
+function updateUI() {
+    UI.money.textContent = formatNumber(GameState.money);
+    UI.oranges.textContent = formatNumber(GameState.oranges);
+    UI.prosperity.textContent = GameState.prosperity;
+    UI.prosperityFill.style.width = Math.min(100, (GameState.prosperity / getNextRankProsperity()) * 100) + '%';
+    UI.day.textContent = GameState.day;
+    UI.treeCount.textContent = GameState.trees.length;
+    UI.storageCap.textContent = GameState.storageCap + GameState.effects.storageBonus;
+    UI.rankDisplay.textContent = '🎖️ ' + GameState.rank;
+    
+    renderTrees();
+    checkPromotion();
+}
+
+function formatNumber(num) {
+    if (num >= 10000) {
+        return (num / 10000).toFixed(1) + '万';
+    }
+    return num.toLocaleString();
+}
+
+function getNextRankProsperity() {
+    const nextRank = Ranks[GameState.rankIndex + 1];
+    return nextRank ? nextRank.prosperity : Ranks[Ranks.length - 1].prosperity * 2;
+}
+
+function checkPromotion() {
+    const nextRank = Ranks[GameState.rankIndex + 1];
+    if (nextRank && GameState.prosperity >= nextRank.prosperity) {
+        GameState.rankIndex++;
+        GameState.rank = nextRank.name;
+        showPromotion(nextRank.name);
+    }
+}
+
+function showPromotion(rankName) {
+    UI.promotionText.textContent = `你的努力得到了认可！现在你是${rankName}了！`;
+    UI.promotionModal.classList.remove('hidden');
+}
+
+function renderTrees() {
+    UI.treeGrid.innerHTML = '';
+    GameState.trees.forEach(tree => {
+        const treeEl = document.createElement('div');
+        treeEl.className = 'tree' + (tree.harvestable ? ' ready' : '');
+        treeEl.innerHTML = `
+            <div class="tree-icon">${tree.harvestable ? '🌳' : '🌱'}</div>
+            <div class="tree-status">${tree.harvestable ? '可采摘' : '生长中'}</div>
+        `;
+        treeEl.onclick = () => harvestTree(tree);
+        UI.treeGrid.appendChild(treeEl);
+    });
+}
+
+function harvestTree(tree) {
+    if (!tree.harvestable) {
+        showToast('这棵树还没成熟');
+        return;
+    }
+    
+    const storage = GameState.storageCap + GameState.effects.storageBonus;
+    const canHarvest = Math.min(10, storage - GameState.oranges);
+    
+    if (canHarvest <= 0) {
+        showToast('仓库已满！');
+        return;
+    }
+    
+    const bonus = 1 + GameState.effects.harvestBonus;
+    const amount = Math.ceil(canHarvest * bonus);
+    
+    GameState.oranges += amount;
+    tree.harvestable = false;
+    
+    setTimeout(() => {
+        tree.harvestable = true;
+        showToast('🍊 有果树成熟了！');
+        updateUI();
+    }, 10000);
+    
+    logEvent(`采摘了 ${amount} 个耙耙柑`);
+    showToast(`+${amount} 🍊`);
+    updateUI();
+}
+
+function harvestAll() {
+    const harvestable = GameState.trees.filter(t => t.harvestable);
+    if (harvestable.length === 0) {
+        showToast('没有可采摘的果树');
+        return;
+    }
+    
+    const storage = GameState.storageCap + GameState.effects.storageBonus;
+    const canHarvest = storage - GameState.oranges;
+    
+    if (canHarvest <= 0) {
+        showToast('仓库已满！');
+        return;
+    }
+    
+    const bonus = 1 + GameState.effects.harvestBonus;
+    let total = 0;
+    
+    harvestable.forEach(tree => {
+        if (total < canHarvest) {
+            const amount = Math.min(10, canHarvest - total);
+            const actual = Math.ceil(amount * bonus);
+            total += actual;
+            tree.harvestable = false;
+            
+            setTimeout(() => {
+                tree.harvestable = true;
+                updateUI();
+            }, 10000);
+        }
+    });
+    
+    GameState.oranges += total;
+    logEvent(`采摘了 ${total} 个耙耙柑`);
+    showToast(`+${total} 🍊`);
+    updateUI();
+}
+
+function plantTree() {
+    const cost = 500;
+    if (GameState.money < cost) {
+        showToast('资金不足！');
+        return;
+    }
+    
+    if (GameState.trees.length >= 9) {
+        showToast('果园已满！');
+        return;
+    }
+    
+    GameState.money -= cost;
+    GameState.trees.push({
+        id: GameState.nextTreeId++,
+        mature: false,
+        harvestable: false
+    });
+    
+    setTimeout(() => {
+        const tree = GameState.trees.find(t => t.id === GameState.nextTreeId - 1);
+        if (tree) {
+            tree.mature = true;
+            tree.harvestable = true;
+            showToast('🌳 新果树成熟了！');
+            updateUI();
+        }
+    }, 15000);
+    
+    logEvent('种植了一棵新果树');
+    showToast('种植成功！15 秒后成熟');
+    updateUI();
+}
+
+function startLivestream() {
+    const product = UI.productSelect.value;
+    const strategy = UI.priceStrategy.value;
+    const traffic = parseInt(UI.trafficBuy.value) || 0;
+    
+    if (GameState.oranges <= 0) {
+        showToast('没有耙耙柑可卖！');
+        return;
+    }
+    
+    if (GameState.money < traffic) {
+        showToast('资金不足以投放流量！');
+        return;
+    }
+    
+    GameState.money -= traffic;
+    UI.streamOverlay.classList.remove('hidden');
+    
+    let progress = 0;
+    let viewers = 100 + traffic;
+    let orders = 0;
+    let revenue = 0;
+    
+    const basePrice = 10;
+    let price = basePrice;
+    let sellRate = 1;
+    
+    if (strategy === 'low') {
+        price = basePrice * 0.8;
+        sellRate = 1.5;
+    } else if (strategy === 'high') {
+        price = basePrice * 1.5;
+        sellRate = 0.7;
+    }
+    
+    price *= GameState.orangeQuality;
+    price *= (1 + GameState.effects.priceBonus);
+    price = Math.round(price);
+    
+    const interval = setInterval(() => {
+        progress += 2;
+        UI.streamProgress.style.width = progress + '%';
+        
+        viewers += Math.floor(Math.random() * 20 + traffic / 50);
+        UI.viewerCount.textContent = viewers;
+        
+        const newOrders = Math.floor(Math.random() * 5 * sellRate);
+        orders += newOrders;
+        UI.orderCount.textContent = orders;
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+            
+            const sellAmount = Math.min(orders, GameState.oranges);
+            revenue = sellAmount * price;
+            
+            GameState.oranges -= sellAmount;
+            GameState.money += revenue;
+            
+            const prosperityGain = Math.floor(sellAmount / 10) + Math.floor(revenue / 100);
+            GameState.prosperity += prosperityGain;
+            
+            nextDay();
+            
+            setTimeout(() => {
+                UI.streamOverlay.classList.add('hidden');
+                logEvent(`直播结束！卖了 ${sellAmount} 个耙耙柑，收入 💰${revenue}，繁荣度 +${prosperityGain}`);
+                showToast(`直播收入：💰${revenue}`);
+                updateUI();
+            }, 500);
+        }
+    }, 50);
+}
+
+function nextDay() {
+    GameState.day++;
+    
+    if (Math.random() < 0.2) {
+        triggerRandomEvent();
+    }
+    
+    GameState.effects.harvestBonus = 0;
+    GameState.effects.priceBonus = GameState.builtFacilities.includes('network') ? 0.15 : 0;
+    GameState.orangeQuality = 1.0;
+}
+
+function triggerRandomEvent() {
+    const event = RandomEvents[Math.floor(Math.random() * RandomEvents.length)];
+    
+    UI.eventTitle.textContent = event.title;
+    UI.eventText.textContent = event.text;
+    UI.eventChoices.innerHTML = `
+        <button class="btn primary" onclick="closeEventModal(true)">确定</button>
+    `;
+    UI.eventModal.classList.remove('hidden');
+    
+    window.currentEvent = event;
+}
+
+function closeEventModal(confirmed) {
+    if (confirmed && window.currentEvent) {
+        window.currentEvent.effect();
+    }
+    UI.eventModal.classList.add('hidden');
+    window.currentEvent = null;
+    updateUI();
+}
+
+function renderBuildings() {
+    UI.buildingsList.innerHTML = '';
+    
+    Buildings.forEach(building => {
+        const built = GameState.builtFacilities.includes(building.id);
+        const canBuild = GameState.money >= building.cost && !built;
+        
+        const card = document.createElement('div');
+        card.className = 'building-card' + (built ? ' built' : '');
+        card.innerHTML = `
+            <div class="building-header">
+                <span class="building-name">${building.name}</span>
+                <span class="building-icon">${building.icon}</span>
+            </div>
+            <div class="building-desc">${building.desc}</div>
+            <div class="building-effect">${building.effect}</div>
+            <div class="building-cost">${built ? '✅ 已建造' : '💰 ' + formatNumber(building.cost)}</div>
+            ${!built ? `<button class="btn ${canBuild ? 'primary' : 'secondary'} building-btn" 
+                ${canBuild ? '' : 'disabled'} 
+                onclick="buildFacility('${building.id}')">
+                ${canBuild ? '建造' : '资金不足'}
+            </button>` : ''}
+        `;
+        UI.buildingsList.appendChild(card);
+    });
+}
+
+function buildFacility(id) {
+    const building = Buildings.find(b => b.id === id);
+    if (!building) return;
+    
+    if (GameState.money < building.cost) {
+        showToast('资金不足！');
+        return;
+    }
+    
+    GameState.money -= building.cost;
+    GameState.builtFacilities.push(id);
+    GameState.prosperity += building.prosperityAdd;
+    
+    if (building.effectValue.harvestBonus) {
+        GameState.effects.harvestBonus += building.effectValue.harvestBonus;
+    }
+    if (building.effectValue.storageBonus) {
+        GameState.effects.storageBonus += building.effectValue.storageBonus;
+    }
+    if (building.effectValue.priceBonus) {
+        GameState.effects.priceBonus += building.effectValue.priceBonus;
+    }
+    if (building.effectValue.unlock) {
+        GameState.unlocks[building.effectValue.unlock] = true;
+        updateProductOptions();
+    }
+    
+    logEvent(`建造了 ${building.name}！繁荣度 +${building.prosperityAdd}`);
+    showToast(`🎉 ${building.name} 建造完成！`);
+    renderBuildings();
+    updateUI();
+}
+
+function updateProductOptions() {
+    const juiceOption = UI.productSelect.querySelector('option[value="juice"]');
+    const driedOption = UI.productSelect.querySelector('option[value="dried"]');
+    
+    if (GameState.unlocks.juice) {
+        juiceOption.disabled = false;
+        juiceOption.textContent = '果汁 (💰25/瓶)';
+    }
+    if (GameState.unlocks.dried) {
+        driedOption.disabled = false;
+        driedOption.textContent = '果干 (💰30/包)';
+    }
+}
+
+function logEvent(text) {
+    const p = document.createElement('p');
+    p.innerHTML = `<span style="color: #888;">第${GameState.day}天:</span> ${text}`;
+    UI.eventLog.insertBefore(p, UI.eventLog.firstChild);
+    
+    while (UI.eventLog.children.length > 5) {
+        UI.eventLog.removeChild(UI.eventLog.lastChild);
+    }
+}
+
+function showToast(text) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = text;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// 吉祥物互动
+UI.mascot.addEventListener('click', () => {
+    UI.mascotBubble.style.display = 'block';
+    setTimeout(() => {
+        UI.mascotBubble.style.display = 'none';
+    }, 5000);
+});
+
+// 事件绑定
+document.getElementById('btn-harvest').addEventListener('click', harvestAll);
+document.getElementById('btn-plant').addEventListener('click', plantTree);
+document.getElementById('btn-stream').addEventListener('click', startLivestream);
+document.getElementById('btn-close-promotion').addEventListener('click', () => {
+    UI.promotionModal.classList.add('hidden');
+});
+
+// 初始化
+function init() {
+    updateUI();
+    renderBuildings();
+    GameState.trees[0].harvestable = true;
+    logEvent('欢迎来到阳光村！点击"采摘耙耙柑"开始你的助农之旅。');
+}
+
+init();
+    </script>
 </body>
 </html>
