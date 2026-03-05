@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🍊 橘子农场主 - Orange Farm</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
@@ -15,14 +13,13 @@
         }
         
         body {
-            font-family: 'Nunito', 'Microsoft YaHei', sans-serif;
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
             background: linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #98FB98 100%);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
         
-        /* 云朵背景动画 */
         .cloud {
             position: fixed;
             font-size: 4em;
@@ -49,7 +46,6 @@
             z-index: 1;
         }
         
-        /* 游戏标题 */
         .game-header {
             text-align: center;
             margin-bottom: 20px;
@@ -63,12 +59,12 @@
         }
         
         .game-title {
-            font-family: 'Fredoka One', cursive;
             font-size: 3.5em;
             color: #FF8C00;
             text-shadow: 4px 4px 0 #FFD700, 8px 8px 0 rgba(0,0,0,0.2);
             letter-spacing: 3px;
             animation: pulse 2s infinite;
+            font-weight: bold;
         }
         
         @keyframes pulse {
@@ -87,7 +83,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         
-        /* 吉祥物 */
         .mascot {
             position: fixed;
             bottom: 20px;
@@ -140,7 +135,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
         
-        /* 资源栏 */
         .resource-bar {
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             border-radius: 20px;
@@ -194,11 +188,11 @@
         }
         
         .resource-value {
-            font-family: 'Fredoka One', cursive;
             font-size: 2em;
             color: #FF6B35;
             position: relative;
             z-index: 1;
+            font-weight: bold;
         }
         
         .resource-label {
@@ -209,7 +203,6 @@
             z-index: 1;
         }
         
-        /* 主游戏区域 */
         .main-game {
             display: grid;
             grid-template-columns: 1fr 350px;
@@ -223,7 +216,6 @@
             }
         }
         
-        /* 农场区域 */
         .farm-section {
             background: linear-gradient(135deg, #DEB887 0%, #D2691E 100%);
             border-radius: 25px;
@@ -353,7 +345,6 @@
             animation: shimmer 2s infinite;
         }
         
-        /* 动作按钮区域 */
         .action-area {
             display: flex;
             gap: 10px;
@@ -377,7 +368,6 @@
             gap: 8px;
             position: relative;
             overflow: hidden;
-            font-family: 'Fredoka One', cursive;
         }
         
         .game-btn::before {
@@ -436,14 +426,12 @@
             border-bottom: 5px solid #2E7D32;
         }
         
-        /* 右侧面板 */
         .side-panel {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
         
-        /* 直播间 */
         .live-panel {
             background: linear-gradient(135deg, #FF69B4 0%, #FF1493 100%);
             border-radius: 25px;
@@ -506,9 +494,9 @@
         }
         
         .live-stat-value {
-            font-family: 'Fredoka One', cursive;
             font-size: 1.5em;
             color: #FFD700;
+            font-weight: bold;
         }
         
         .live-stat-label {
@@ -531,7 +519,6 @@
             100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
         }
         
-        /* 商店面板 */
         .shop-panel {
             background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
             border-radius: 25px;
@@ -624,7 +611,6 @@
             font-weight: bold;
         }
         
-        /* 成就面板 */
         .achievements-panel {
             background: linear-gradient(135deg, #DDA0DD 0%, #9370DB 100%);
             border-radius: 25px;
@@ -701,7 +687,6 @@
             100% { transform: scale(1) rotate(360deg); }
         }
         
-        /* 日志面板 */
         .log-panel {
             background: linear-gradient(135deg, #F0E68C 0%, #DAA520 100%);
             border-radius: 25px;
@@ -755,7 +740,6 @@
             background: #FFFACD;
         }
         
-        /* 离线收益弹窗 */
         .offline-popup {
             position: fixed;
             top: 50%;
@@ -772,10 +756,10 @@
         }
         
         .offline-popup h2 {
-            font-family: 'Fredoka One', cursive;
             font-size: 2em;
             color: #FF8C00;
             margin-bottom: 20px;
+            font-weight: bold;
         }
         
         .offline-rewards {
@@ -797,10 +781,10 @@
         }
         
         .offline-reward-value {
-            font-family: 'Fredoka One', cursive;
             font-size: 1.5em;
             color: #FF6B35;
             margin-top: 5px;
+            font-weight: bold;
         }
         
         .close-popup {
@@ -831,7 +815,6 @@
             display: none;
         }
         
-        /* 等级进度条 */
         .level-bar-container {
             background: rgba(255,255,255,0.9);
             border-radius: 15px;
@@ -873,7 +856,6 @@
             animation: shimmer 2s infinite;
         }
         
-        /* 滚动条美化 */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -892,7 +874,6 @@
             background: #FF6B35;
         }
         
-        /* 点击特效 */
         .click-effect {
             position: fixed;
             pointer-events: none;
@@ -909,19 +890,16 @@
     </style>
 </head>
 <body>
-    <!-- 背景云朵 -->
     <div class="cloud">☁️</div>
     <div class="cloud">☁️</div>
     <div class="cloud">☁️</div>
     
     <div class="game-container">
-        <!-- 标题 -->
         <div class="game-header">
             <h1 class="game-title">🍊 橘子农场主</h1>
             <div class="game-subtitle">种植 · 直播 · 赚钱 · 装饰</div>
         </div>
         
-        <!-- 资源栏 -->
         <div class="resource-bar">
             <div class="resource-item">
                 <div class="resource-value" id="money">¥0</div>
@@ -941,13 +919,9 @@
             </div>
         </div>
         
-        <!-- 主游戏区域 -->
         <div class="main-game">
-            <!-- 农场区域 -->
             <div class="farm-section">
-                <div class="farm-grid" id="farmGrid">
-                    <!-- 动态生成地块 -->
-                </div>
+                <div class="farm-grid" id="farmGrid"></div>
                 
                 <div class="action-area">
                     <button class="game-btn btn-plant" onclick="plantOrange()">
@@ -965,9 +939,7 @@
                 </div>
             </div>
             
-            <!-- 右侧面板 -->
             <div class="side-panel">
-                <!-- 直播间 -->
                 <div class="live-panel">
                     <div class="live-screen">
                         <div class="live-badge" id="liveBadge" style="display: none;">LIVE</div>
@@ -988,7 +960,6 @@
                     </div>
                 </div>
                 
-                <!-- 等级进度 -->
                 <div class="level-bar-container">
                     <div class="level-info">
                         <span>⭐ 等级 <span id="levelNum">1</span></span>
@@ -999,27 +970,20 @@
                     </div>
                 </div>
                 
-                <!-- 商店 -->
                 <div class="shop-panel">
                     <div class="shop-tabs">
                         <button class="shop-tab active" onclick="switchShopTab('seeds')">🌱 种子</button>
                         <button class="shop-tab" onclick="switchShopTab('decorations')">🏠 装饰</button>
                     </div>
-                    <div class="shop-grid" id="shopGrid">
-                        <!-- 动态生成商品 -->
-                    </div>
+                    <div class="shop-grid" id="shopGrid"></div>
                 </div>
                 
-                <!-- 成就 -->
                 <div class="achievements-panel">
-                    <div class="achievements-grid" id="achievementsGrid">
-                        <!-- 动态生成成就 -->
-                    </div>
+                    <div class="achievements-grid" id="achievementsGrid"></div>
                 </div>
             </div>
         </div>
         
-        <!-- 日志 -->
         <div class="log-panel">
             <div class="log-container" id="logArea">
                 <div class="log-entry new">🎉 欢迎来到橘子农场主！开始你的农场之旅吧！</div>
@@ -1027,25 +991,18 @@
         </div>
     </div>
     
-    <!-- 吉祥物 -->
     <div class="mascot" onclick="showMascotTip()" id="mascot">🐮🐭</div>
-    <div class="mascot-bubble" id="mascotBubble">
-        嘿！点击成熟的橘子收获，开直播赚钱哦！
-    </div>
+    <div class="mascot-bubble" id="mascotBubble">嘿！点击成熟的橘子收获，开直播赚钱哦！</div>
     
-    <!-- 离线收益弹窗 -->
     <div class="popup-overlay" id="popupOverlay" onclick="closeOfflinePopup()"></div>
     <div class="offline-popup" id="offlinePopup">
         <h2>🎉 欢迎回来！</h2>
         <div>在你离开的时间里，农场自动产生了收益：</div>
-        <div class="offline-rewards" id="offlineRewards">
-            <!-- 动态生成 -->
-        </div>
+        <div class="offline-rewards" id="offlineRewards"></div>
         <button class="close-popup" onclick="closeOfflinePopup()">收下奖励</button>
     </div>
     
     <script>
-        // 游戏状态
         let gameState = {
             money: 100,
             oranges: 0,
@@ -1068,7 +1025,6 @@
             lastSaveTime: Date.now()
         };
         
-        // 商店物品
         const shopItems = {
             seeds: [
                 { id: 'golden_seed', name: '金橘种子', emoji: '🌟', price: 50, type: 'seed', growthTime: 80, value: 15 },
@@ -1085,7 +1041,6 @@
             ]
         };
         
-        // 成就
         const achievementList = [
             { id: 'first_harvest', name: '第一次收获', emoji: '🍊', condition: (s) => s.oranges >= 1 },
             { id: 'first_sale', name: '第一桶金', emoji: '💰', condition: (s) => s.money >= 100 },
@@ -1097,13 +1052,9 @@
             { id: 'level_10', name: '传奇农场主', emoji: '🏆', condition: (s) => s.level >= 10 },
         ];
         
-        // 肥料数量
         let fertilizerCount = 2;
-        
-        // 当前商店标签
         let currentShopTab = 'seeds';
         
-        // 吉祥物提示
         const mascotTips = [
             "嘿！点击成熟的橘子收获，开直播赚钱哦！",
             "记得及时收获，不然橘子会烂掉！",
@@ -1113,43 +1064,28 @@
             "升级可以解锁更多功能！",
         ];
         
-        // 初始化游戏
         function init() {
             loadGame();
             renderFarm();
             renderShop();
             renderAchievements();
             updateStats();
-            
-            // 计算离线收益
             calculateOfflineIncome();
-            
-            // 游戏循环
             setInterval(gameLoop, 1000);
-            
-            // 自动保存
             setInterval(saveGame, 10000);
-            
-            // 随机吉祥物提示
             setInterval(() => {
-                if (Math.random() < 0.1) {
-                    showRandomTip();
-                }
+                if (Math.random() < 0.1) showRandomTip();
             }, 30000);
         }
         
-        // 游戏主循环
         function gameLoop() {
             let hasChanges = false;
             
-            // 植物生长
             gameState.plots.forEach(plot => {
                 if (plot.planted && plot.growth < plot.maxGrowth) {
                     let growthRate = 1;
-                    // 装饰加成
                     if (gameState.decorations.includes('fountain')) growthRate *= 1.2;
                     plot.growth += growthRate;
-                    
                     if (plot.growth >= plot.maxGrowth) {
                         plot.growth = plot.maxGrowth;
                         hasChanges = true;
@@ -1157,34 +1093,20 @@
                 }
             });
             
-            // 直播收益
             if (gameState.isLive) {
                 let baseIncome = 2;
                 let viewerGrowth = 1;
-                
-                // 装饰加成
                 if (gameState.decorations.includes('lights')) baseIncome *= 1.1;
                 if (gameState.decorations.includes('mic')) baseIncome *= 1.2;
                 if (gameState.decorations.includes('background')) viewerGrowth += 0.5;
-                
-                // 粉丝影响
                 baseIncome += gameState.fans * 0.05;
-                
-                // 观众增长
                 if (gameState.viewers < 50 + gameState.fans * 0.5) {
                     gameState.viewers += viewerGrowth;
                 }
-                
                 gameState.liveIncome = baseIncome * (1 + gameState.viewers / 100);
                 const income = gameState.liveIncome / 10;
                 gameState.money += income;
-                
-                // 显示收益动画
-                if (income > 0.1) {
-                    showIncomeAnimation(income);
-                }
-                
-                // 粉丝增长
+                if (income > 0.1) showIncomeAnimation(income);
                 if (Math.random() < 0.15) {
                     gameState.fans += 1;
                     hasChanges = true;
@@ -1194,17 +1116,13 @@
                 gameState.liveIncome = 0;
             }
             
-            // 检查成就
             checkAchievements();
-            
-            // 更新显示
             if (hasChanges || gameState.isLive) {
                 updateStats();
                 renderFarm();
             }
         }
         
-        // 种植橘子
         function plantOrange() {
             const emptyPlot = gameState.plots.find(p => !p.planted);
             if (!emptyPlot) {
@@ -1212,13 +1130,11 @@
                 showClickEffect('没有空地了！', event);
                 return;
             }
-            
             if (gameState.money < 10) {
                 addLog('金钱不足！需要 ¥10 💰');
                 showClickEffect('金钱不足！', event);
                 return;
             }
-            
             gameState.money -= 10;
             emptyPlot.planted = true;
             emptyPlot.growth = 0;
@@ -1230,21 +1146,18 @@
             renderFarm();
         }
         
-        // 使用肥料
         function useFertilizer() {
             if (fertilizerCount <= 0) {
                 addLog('肥料用完了！去商店买吧 ✨');
                 showClickEffect('没有肥料了！', event);
                 return;
             }
-            
             const maturePlot = gameState.plots.find(p => p.planted && p.growth < p.maxGrowth);
             if (!maturePlot) {
                 addLog('没有需要施肥的树 🌱');
                 showClickEffect('不需要施肥', event);
                 return;
             }
-            
             fertilizerCount--;
             maturePlot.growth += 30;
             if (maturePlot.growth > maturePlot.maxGrowth) {
@@ -1256,17 +1169,13 @@
             updateStats();
         }
         
-        // 收获橘子
         function harvestPlot(plotId) {
             const plot = gameState.plots.find(p => p.id === plotId);
-            if (!plot || !plot.planted || plot.growth < plot.maxGrowth) {
-                return;
-            }
+            if (!plot || !plot.planted || plot.growth < plot.maxGrowth) return;
             
             let harvestAmount = 1;
-            let value = 5;
-            if (plot.type === 'golden') { harvestAmount = 2; value = 15; }
-            if (plot.type === 'honey') { harvestAmount = 2; value = 8; }
+            if (plot.type === 'golden') harvestAmount = 2;
+            if (plot.type === 'honey') harvestAmount = 2;
             
             gameState.oranges += harvestAmount;
             gameState.exp += harvestAmount * 5;
@@ -1280,26 +1189,22 @@
             renderFarm();
         }
         
-        // 出售橘子
         function sellOranges() {
             if (gameState.oranges <= 0) {
                 addLog('没有橘子可卖！先收获吧 🍊');
                 showClickEffect('没有橘子', event);
                 return;
             }
-            
             const income = gameState.oranges * 5;
             gameState.money += income;
             gameState.exp += gameState.oranges * 2;
             gameState.oranges = 0;
-            
             addLog(`卖出所有橘子！获得 ¥${income} 💰`);
             showClickEffect(`+¥${income}`, event);
             checkLevelUp();
             updateStats();
         }
         
-        // 开关直播
         function toggleLive() {
             gameState.isLive = !gameState.isLive;
             const btn = document.getElementById('startLiveBtn');
@@ -1319,7 +1224,6 @@
             }
         }
         
-        // 切换商店标签
         function switchShopTab(tab) {
             currentShopTab = tab;
             document.querySelectorAll('.shop-tab').forEach(t => t.classList.remove('active'));
@@ -1327,7 +1231,6 @@
             renderShop();
         }
         
-        // 购买物品
         function buyItem(itemId, type) {
             let item;
             if (type === 'seeds') {
@@ -1335,7 +1238,6 @@
             } else {
                 item = shopItems.decorations.find(i => i.id === itemId);
             }
-            
             if (!item) return;
             
             if (gameState.money < item.price) {
@@ -1376,22 +1278,19 @@
                 showClickEffect(`-${item.price}¥`, event);
                 renderShop();
             }
-            
             updateStats();
         }
         
-        // 检查升级
         function checkLevelUp() {
             const expNeeded = gameState.level * 100;
             if (gameState.exp >= expNeeded) {
                 gameState.level++;
-                gameState.exp = expNeeded; // 保留溢出经验
+                gameState.exp = expNeeded;
                 addLog(`🎉 升级了！当前等级：${gameState.level}`);
                 showClickEffect('升级了！⭐', { clientX: window.innerWidth/2, clientY: window.innerHeight/2 });
             }
         }
         
-        // 检查成就
         function checkAchievements() {
             achievementList.forEach(ach => {
                 if (!gameState.achievements.includes(ach.id) && ach.condition(gameState)) {
@@ -1403,7 +1302,6 @@
             });
         }
         
-        // 更新统计
         function updateStats() {
             document.getElementById('money').textContent = '¥' + Math.floor(gameState.money);
             document.getElementById('oranges').textContent = gameState.oranges;
@@ -1413,7 +1311,6 @@
             document.getElementById('viewers').textContent = Math.floor(gameState.viewers);
             document.getElementById('liveIncome').textContent = '+¥' + gameState.liveIncome.toFixed(1) + '/s';
             
-            // 经验条
             const expNeeded = gameState.level * 100;
             const expPercent = (gameState.exp / expNeeded) * 100;
             document.getElementById('expValue').textContent = Math.floor(gameState.exp);
@@ -1421,7 +1318,6 @@
             document.getElementById('expBar').style.width = Math.min(expPercent, 100) + '%';
         }
         
-        // 渲染农场
         function renderFarm() {
             const grid = document.getElementById('farmGrid');
             grid.innerHTML = '';
@@ -1432,10 +1328,7 @@
                 if (plot.planted && plot.growth >= plot.maxGrowth) {
                     div.classList.add('ready');
                 }
-                div.onclick = (e) => {
-                    event = e;
-                    harvestPlot(plot.id);
-                };
+                div.onclick = (e) => { event = e; harvestPlot(plot.id); };
                 
                 let emoji = '🟫';
                 let info = '空地';
@@ -1459,33 +1352,23 @@
                     <div class="plot-content">
                         <div class="plot-emoji">${emoji}</div>
                         <div class="plot-info">${info}</div>
-                        ${plot.planted ? `
-                            <div class="growth-bar">
-                                <div class="growth-fill" style="width: ${progress}%"></div>
-                            </div>
-                        ` : ''}
+                        ${plot.planted ? `<div class="growth-bar"><div class="growth-fill" style="width: ${progress}%"></div></div>` : ''}
                     </div>
                 `;
-                
                 grid.appendChild(div);
             });
         }
         
-        // 渲染商店
         function renderShop() {
             const grid = document.getElementById('shopGrid');
             grid.innerHTML = '';
-            
             const items = currentShopTab === 'seeds' ? shopItems.seeds : shopItems.decorations;
             
             items.forEach(item => {
                 const owned = gameState.decorations.includes(item.id);
                 const div = document.createElement('div');
                 div.className = 'shop-item' + (owned ? ' owned' : '');
-                div.onclick = (e) => {
-                    event = e;
-                    buyItem(item.id, currentShopTab);
-                };
+                div.onclick = (e) => { event = e; buyItem(item.id, currentShopTab); };
                 div.innerHTML = `
                     <div class="shop-item-emoji">${item.emoji}</div>
                     <div class="shop-item-name">${item.name}</div>
@@ -1494,7 +1377,6 @@
                 grid.appendChild(div);
             });
             
-            // 显示肥料数量
             if (currentShopTab === 'seeds') {
                 const fertDiv = document.createElement('div');
                 fertDiv.className = 'shop-item';
@@ -1509,7 +1391,6 @@
             }
         }
         
-        // 渲染成就
         function renderAchievements() {
             const grid = document.getElementById('achievementsGrid');
             grid.innerHTML = '';
@@ -1528,26 +1409,20 @@
             }
         }
         
-        // 添加日志
         function addLog(message) {
             const logArea = document.getElementById('logArea');
             const entry = document.createElement('div');
             entry.className = 'log-entry new';
             entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
             logArea.insertBefore(entry, logArea.firstChild);
-            
-            // 移除其他日志的 new 类
             logArea.querySelectorAll('.log-entry').forEach((e, i) => {
                 if (i > 0) e.classList.remove('new');
             });
-            
-            // 限制日志数量
             while (logArea.children.length > 20) {
                 logArea.removeChild(logArea.lastChild);
             }
         }
         
-        // 计算离线收益
         function calculateOfflineIncome() {
             const now = Date.now();
             const lastTime = gameState.lastSaveTime;
@@ -1581,19 +1456,16 @@
                     
                     document.getElementById('popupOverlay').style.display = 'block';
                     document.getElementById('offlinePopup').style.display = 'block';
-                    
                     addLog(`离线 ${Math.floor(offlineSeconds/60)} 分钟，获得：¥${offlineMoney} + 🍊${offlineOranges}`);
                 }
             }
         }
         
-        // 关闭离线弹窗
         function closeOfflinePopup() {
             document.getElementById('popupOverlay').style.display = 'none';
             document.getElementById('offlinePopup').style.display = 'none';
         }
         
-        // 显示收益动画
         function showIncomeAnimation(amount) {
             const livePanel = document.querySelector('.live-panel');
             const anim = document.createElement('div');
@@ -1602,11 +1474,9 @@
             anim.style.left = '50%';
             anim.style.top = '30%';
             livePanel.appendChild(anim);
-            
             setTimeout(() => anim.remove(), 1000);
         }
         
-        // 显示点击特效
         function showClickEffect(text, e) {
             if (!e || !e.clientX) return;
             const effect = document.createElement('div');
@@ -1616,40 +1486,29 @@
             effect.style.top = e.clientY + 'px';
             effect.style.color = text.includes('+') ? '#32CD32' : text.includes('-') ? '#FF6B6B' : '#FFD700';
             document.body.appendChild(effect);
-            
             setTimeout(() => effect.remove(), 1000);
         }
         
-        // 显示吉祥物提示
         function showMascotTip() {
             const bubble = document.getElementById('mascotBubble');
             bubble.textContent = mascotTips[Math.floor(Math.random() * mascotTips.length)];
             bubble.style.display = 'block';
-            
-            setTimeout(() => {
-                bubble.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { bubble.style.display = 'none'; }, 3000);
         }
         
-        // 随机提示
         function showRandomTip() {
             const bubble = document.getElementById('mascotBubble');
             bubble.textContent = mascotTips[Math.floor(Math.random() * mascotTips.length)];
             bubble.style.display = 'block';
-            
-            setTimeout(() => {
-                bubble.style.display = 'none';
-            }, 4000);
+            setTimeout(() => { bubble.style.display = 'none'; }, 4000);
         }
         
-        // 保存游戏
         function saveGame() {
             gameState.lastSaveTime = Date.now();
             localStorage.setItem('orangeFarmSave', JSON.stringify(gameState));
             localStorage.setItem('fertilizerCount', fertilizerCount);
         }
         
-        // 加载游戏
         function loadGame() {
             const save = localStorage.getItem('orangeFarmSave');
             if (save) {
@@ -1664,7 +1523,6 @@
             }
         }
         
-        // 启动游戏
         init();
     </script>
 </body>

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "skills": {
+    "skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1772450706300
+    },
+    "tavily-search": {
+      "version": "1.0.0",
+      "installedAt": 1772450732561
+    },
+    "gog": {
+      "version": "1.0.0",
+      "installedAt": 1772450761331
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1772450769405
+    },
+    "agent-memory": {
+      "version": "1.0.0",
+      "installedAt": 1772450862827
+    },
+    "self-improving-agent": {
+      "version": "1.0.11",
+      "installedAt": 1772450889423
+    },
+    "proactive-agent": {
+      "version": "3.1.0",
+      "installedAt": 1772450897464
+    },
+    "weather": {
+      "version": "1.0.0",
+      "installedAt": 1772450942266
+    },
+    "summarize": {
+      "version": "1.0.0",
+      "installedAt": 1772450952450
+    },
+    "find-skills": {
+      "version": "0.1.0",
+      "installedAt": 1772450963096
+    }
+  }
+}
